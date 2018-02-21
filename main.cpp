@@ -23,6 +23,7 @@
 #include "Texture.h"
 #include "Normal.h"
 #include "Face.h"
+#include "Object.h"
 #include "glm/glm/vec3.hpp"
 #include "glm/glm/vec2.hpp"
 using namespace std;
@@ -107,6 +108,7 @@ std::chrono::high_resolution_clock::time_point g_frameTime{
   bool pointModel=false;
   bool solidModel=true;
   bool textureHere=true;
+  vector<Object> objectVector;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -215,7 +217,7 @@ std::chrono::high_resolution_clock::time_point g_frameTime{
 //If the user wants a normal model looking if triangular faces or Quads
   if(solidModel){
    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-   if(!(faces[1].isTriangle())){
+   if(objectVector[0].getTriangle()){
     glBegin(GL_QUADS);
   }
   
@@ -224,20 +226,20 @@ else{
  }
  }
 
- Gluint vbo;
- glGenBuffers(1, &vbo);
- glBindBuffers(GL_ARRAY_BUFFER, vbo);
+ // GLuint vbo;
+ // glGenBuffers(1, &vbo);
+ // glBindBuffers(GL_ARRAY_BUFFER, vbo);
 
- glBufferData(GL_ARRAY_BUFFER, vertexArray.size()*sizeof(glm::vec3),&vertexArray[0], GL_STATIC_DRAW);
+ // glBufferData(GL_ARRAY_BUFFER, vertexArray.size()*sizeof(glm::vec3),&vertexArray[0], GL_STATIC_DRAW);
 
- glBindBuffers(GL_ARRAY_BUFFER, vbo);
- glEnableClientState(GL_VERTEX_ARRAY);
- glVertexPointer(3,GL_FLOAT, );
- glEnableClientState(GL_NORMAL_ARRAY);
- glNormalPointer(GL_FLOAT, sizeof(float)*normalArray.size(), );
+ // glBindBuffers(GL_ARRAY_BUFFER, vbo);
+ // glEnableClientState(GL_VERTEX_ARRAY);
+ // glVertexPointer(3,GL_FLOAT, );
+ // glEnableClientState(GL_NORMAL_ARRAY);
+ // glNormalPointer(GL_FLOAT, sizeof(float)*normalArray.size(), );
 
- glBindBuffers(GL_ELEMENT_ARRAY_BUFFER, );
- glDrawElements();
+ // glBindBuffers(GL_ELEMENT_ARRAY_BUFFER, );
+ // glDrawElements();
 
 
   //////////////////////////////////////////////////////////////////////////////
@@ -333,93 +335,7 @@ specialKeyPressed(GLint _key, GLint _x, GLint _y) {
   }
 }
 
-//Parser Method that takes the filename in and parses as needed
-void readFile(std::string filename){
-  ifstream inFile;
 
-  if(filename.find("obj") == std::string::npos){
-    cout << "File is not supported please provide an obj file" << endl;
-
-  }
-
-  else{
-          inFile.open(filename.c_str());
-          string line;
-          GLfloat point;
-
-      while (getline(inFile,line))
-      { 
-
-          if(line.substr(0,1).compare("t")==0){
-            bool triangle;
-            if(line.find("triangle")== std::npos){
-              triangle=true;
-            }
-            else{
-              triangle = false;
-            }
-          }
-
-            if(line.substr(0,1).compare("f")==0){
-              int v1,v2,v3,v4, n, t1, t2, t3, t4;
-
-              if(triangle){
-                sscanf(line.c_str(),"%*s %i %*c %i %*c %i %i %*c %i %*c %i %i %*c %i %*c %i", &v1, &t1, &n, &v2, &t2, &n,&v3, &t3, &n,);
-                vertexArray.push_back(v[v1-1]);
-                vertexArray.push_back(v[v2-1]);
-                vertexArray.push_back(v[v3-1]);
-                textureArray.push_back(textures[t1-1]);
-                textureArray.push_back(textures[t2-1]);
-                textureArray.push_back(textures[t3-1]);
-                normalArray.push_back(normals[n-1]);
-              }
-              else{
-                sscanf(line.c_str(),"%*s %i %*c %i %*c %i %i %*c %i %*c %i %i %*c %i %*c %i %i %*c %i %*c %i", &v1, &t1, &n, &v2, &t2, &n,&v3, &t3, &n, &v4, &t4, &n);
-                 vertexArray.push_back(v[v1-1]);
-                vertexArray.push_back(v[v2-1]);
-                vertexArray.push_back(v[v3-1]);
-                vertexArray.push_back(v[v4-1]);
-                textureArray.push_back(textures[t1-1]);
-                textureArray.push_back(textures[t2-1]);
-                textureArray.push_back(textures[t3-1]);
-                textureArray.push_back(textures[t4-1]);
-                normalArray.push_back(normals[n-1]);
-              }
-
-
-          
-                 }
-
-            //Case for texture
-        else if (line.substr(0,2).compare("vt")==0){
-                  textureHere=true;
-                  GLfloat v1, v2;
-            sscanf(line.c_str(),"%*s %f %f", &v1, &v2);            
-            textures.push_back(glm::vec2(v1,v2));
-
-          }
-
-             //Case for normals
-          else if (line.substr(0,2).compare("vn")==0){
-            GLfloat v1, v2, v3;
-            sscanf(line.c_str(),"%*s %f %f %f", &v1, &v2, &v3);            
-            normals.push_back(glm::vec3(v1,v2,v3));
-                 
-          }
-
-              //Case for the vertex
-          else if(line.substr(0,1).compare("v")==0){
-            GLfloat v1, v2, v3;
-            sscanf(line.c_str(),"%*s %f %f %f", &v1, &v2, &v3);
-            
-            v.push_back(glm::vec3(v1,v2,v3));
-
-                    
-         }
-        }
-  inFile.close();
-    }
-}
 
 //Creates the Main Menu
 void mainMenuHandler(int choice){
@@ -675,49 +591,40 @@ void submenuBackgroundColor(int choice){
 
 //SubMenu for Which Model
 void submenuModel(int choice){
-  v.clear();
-    currentIndexVertex=0;
-    normals.clear();
-    currentIndexNormals=0;
-    faces.clear();
-    currentIndexFaces=0;
-    textures.clear();
-    currentIndexTextures=0;
-    numVertex=0;
-    numIndicies=0;
-    textureHere=false;
+    Object next;
   switch(choice){
     case 0:
     cout << "Bench Model" << endl;
-    readFile("theBench.obj");
+    next.readFile("theBench.obj");
     break;
 
     case 1:
     cout << "Cube Model" << endl;
-    readFile("cube.obj");
+    next.readFile("cube.obj");
     break;
 
     case 2:
     cout << "Skull Model" << endl;
-    readFile("skull.obj");
+    next.readFile("skull.obj");
     break;
 
     case 3:
     cout << "Tree Model" << endl;
-    readFile("tree.obj");
+    next.readFile("tree.obj");
     break;
 
     case 4:
     cout << "Pencil Model" << endl;
-    readFile("pencil.obj");
+    next.readFile("pencil.obj");
     break;
 
     case 5:
     cout << "Palm Model" << endl;
-    readFile("palm.obj");
+    next.readFile("palm.obj");
     break;
 
   }
+  objectVector.push_back(next);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -739,8 +646,11 @@ main(int _argc, char** _argv) {
   glutInitWindowPosition(50, 100);
   glutInitWindowSize(g_width, g_height); // HD size
   g_window = glutCreateWindow("Spiderling: A Rudamentary Game Engine");
+  Object base;
 
-  readFile("theBench.obj");
+  base.readFile("theBench.obj");
+  cout << "Does it get Here " << endl;
+ objectVector.push_back(base);
 
 
   // GL

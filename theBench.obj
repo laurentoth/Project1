@@ -2,6 +2,7 @@
 # www.blender.org
 mtllib theBench.mtl
 o bench_01
+t triangle
 v 0.231393 0.784353 -4.666862
 v 0.231824 0.794808 -4.498012
 v 0.374734 0.794824 -4.498377
