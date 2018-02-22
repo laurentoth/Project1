@@ -9,6 +9,103 @@ Vertex.o: Vertex.cpp Vertex.h
 Texture.o: Texture.cpp Texture.h
 Normal.o: Normal.cpp Normal.h Vertex.h
 Face.o: Face.cpp Face.h Vertex.h Normal.h Texture.h
+Object.o: Object.cpp Object.h Vertex.h glm/glm/vec3.hpp \
+  glm/glm/detail/type_vec3.hpp glm/glm/detail/type_vec.hpp \
+  glm/glm/detail/precision.hpp glm/glm/detail/setup.hpp \
+  glm/glm/detail/../simd/platform.h glm/glm/detail/type_int.hpp \
+  glm/glm/detail/type_vec3.inl glm/glm/vec2.hpp \
+  glm/glm/detail/type_vec2.hpp glm/glm/detail/type_vec2.inl
+main.o: main.cpp Vertex.h Texture.h Normal.h Face.h Object.h \
+  glm/glm/vec3.hpp glm/glm/detail/type_vec3.hpp \
+  glm/glm/detail/type_vec.hpp glm/glm/detail/precision.hpp \
+  glm/glm/detail/setup.hpp glm/glm/detail/../simd/platform.h \
+  glm/glm/detail/type_int.hpp glm/glm/detail/type_vec3.inl \
+  glm/glm/vec2.hpp glm/glm/detail/type_vec2.hpp \
+  glm/glm/detail/type_vec2.inl
+main.o: main.cpp Vertex.h Texture.h Normal.h Face.h Object.h \
+  glm/glm/vec3.hpp glm/glm/detail/type_vec3.hpp \
+  glm/glm/detail/type_vec.hpp glm/glm/detail/precision.hpp \
+  glm/glm/detail/setup.hpp glm/glm/detail/../simd/platform.h \
+  glm/glm/detail/type_int.hpp glm/glm/detail/type_vec3.inl \
+  glm/glm/vec2.hpp glm/glm/detail/type_vec2.hpp \
+  glm/glm/detail/type_vec2.inl
+main.o: main.cpp Vertex.h Texture.h Normal.h Face.h Object.h \
+  glm/glm/vec3.hpp glm/glm/detail/type_vec3.hpp \
+  glm/glm/detail/type_vec.hpp glm/glm/detail/precision.hpp \
+  glm/glm/detail/setup.hpp glm/glm/detail/../simd/platform.h \
+  glm/glm/detail/type_int.hpp glm/glm/detail/type_vec3.inl \
+  glm/glm/vec2.hpp glm/glm/detail/type_vec2.hpp \
+  glm/glm/detail/type_vec2.inl
+main.o: main.cpp Vertex.h Texture.h Normal.h Face.h Object.h \
+  glm/glm/vec3.hpp glm/glm/detail/type_vec3.hpp \
+  glm/glm/detail/type_vec.hpp glm/glm/detail/precision.hpp \
+  glm/glm/detail/setup.hpp glm/glm/detail/../simd/platform.h \
+  glm/glm/detail/type_int.hpp glm/glm/detail/type_vec3.inl \
+  glm/glm/vec2.hpp glm/glm/detail/type_vec2.hpp \
+  glm/glm/detail/type_vec2.inl
+main.o: main.cpp Vertex.h Texture.h Normal.h Face.h Object.h \
+  glm/glm/vec3.hpp glm/glm/detail/type_vec3.hpp \
+  glm/glm/detail/type_vec.hpp glm/glm/detail/precision.hpp \
+  glm/glm/detail/setup.hpp glm/glm/detail/../simd/platform.h \
+  glm/glm/detail/type_int.hpp glm/glm/detail/type_vec3.inl \
+  glm/glm/vec2.hpp glm/glm/detail/type_vec2.hpp \
+  glm/glm/detail/type_vec2.inl
+main.o: main.cpp Vertex.h Texture.h Normal.h Face.h Object.h \
+  glm/glm/vec3.hpp glm/glm/detail/type_vec3.hpp \
+  glm/glm/detail/type_vec.hpp glm/glm/detail/precision.hpp \
+  glm/glm/detail/setup.hpp glm/glm/detail/../simd/platform.h \
+  glm/glm/detail/type_int.hpp glm/glm/detail/type_vec3.inl \
+  glm/glm/vec2.hpp glm/glm/detail/type_vec2.hpp \
+  glm/glm/detail/type_vec2.inl
+main.o: main.cpp Vertex.h Texture.h Normal.h Face.h Object.h \
+  glm/glm/vec3.hpp glm/glm/detail/type_vec3.hpp \
+  glm/glm/detail/type_vec.hpp glm/glm/detail/precision.hpp \
+  glm/glm/detail/setup.hpp glm/glm/detail/../simd/platform.h \
+  glm/glm/detail/type_int.hpp glm/glm/detail/type_vec3.inl \
+  glm/glm/vec2.hpp glm/glm/detail/type_vec2.hpp \
+  glm/glm/detail/type_vec2.inl
+main.o: main.cpp Vertex.h Texture.h Normal.h Face.h Object.h \
+  glm/glm/vec3.hpp glm/glm/detail/type_vec3.hpp \
+  glm/glm/detail/type_vec.hpp glm/glm/detail/precision.hpp \
+  glm/glm/detail/setup.hpp glm/glm/detail/../simd/platform.h \
+  glm/glm/detail/type_int.hpp glm/glm/detail/type_vec3.inl \
+  glm/glm/vec2.hpp glm/glm/detail/type_vec2.hpp \
+  glm/glm/detail/type_vec2.inl
+main.o: main.cpp Vertex.h Texture.h Normal.h Face.h Object.h \
+  glm/glm/vec3.hpp glm/glm/detail/type_vec3.hpp \
+  glm/glm/detail/type_vec.hpp glm/glm/detail/precision.hpp \
+  glm/glm/detail/setup.hpp glm/glm/detail/../simd/platform.h \
+  glm/glm/detail/type_int.hpp glm/glm/detail/type_vec3.inl \
+  glm/glm/vec2.hpp glm/glm/detail/type_vec2.hpp \
+  glm/glm/detail/type_vec2.inl
+main.o: main.cpp Vertex.h Texture.h Normal.h Face.h Object.h \
+  glm/glm/vec3.hpp glm/glm/detail/type_vec3.hpp \
+  glm/glm/detail/type_vec.hpp glm/glm/detail/precision.hpp \
+  glm/glm/detail/setup.hpp glm/glm/detail/../simd/platform.h \
+  glm/glm/detail/type_int.hpp glm/glm/detail/type_vec3.inl \
+  glm/glm/vec2.hpp glm/glm/detail/type_vec2.hpp \
+  glm/glm/detail/type_vec2.inl
+main.o: main.cpp Vertex.h Texture.h Normal.h Face.h Object.h \
+  glm/glm/vec3.hpp glm/glm/detail/type_vec3.hpp \
+  glm/glm/detail/type_vec.hpp glm/glm/detail/precision.hpp \
+  glm/glm/detail/setup.hpp glm/glm/detail/../simd/platform.h \
+  glm/glm/detail/type_int.hpp glm/glm/detail/type_vec3.inl \
+  glm/glm/vec2.hpp glm/glm/detail/type_vec2.hpp \
+  glm/glm/detail/type_vec2.inl
+main.o: main.cpp Vertex.h Texture.h Normal.h Face.h Object.h \
+  glm/glm/vec3.hpp glm/glm/detail/type_vec3.hpp \
+  glm/glm/detail/type_vec.hpp glm/glm/detail/precision.hpp \
+  glm/glm/detail/setup.hpp glm/glm/detail/../simd/platform.h \
+  glm/glm/detail/type_int.hpp glm/glm/detail/type_vec3.inl \
+  glm/glm/vec2.hpp glm/glm/detail/type_vec2.hpp \
+  glm/glm/detail/type_vec2.inl
+main.o: main.cpp Vertex.h Texture.h Normal.h Face.h Object.h \
+  glm/glm/vec3.hpp glm/glm/detail/type_vec3.hpp \
+  glm/glm/detail/type_vec.hpp glm/glm/detail/precision.hpp \
+  glm/glm/detail/setup.hpp glm/glm/detail/../simd/platform.h \
+  glm/glm/detail/type_int.hpp glm/glm/detail/type_vec3.inl \
+  glm/glm/vec2.hpp glm/glm/detail/type_vec2.hpp \
+  glm/glm/detail/type_vec2.inl
 main.o: main.cpp Vertex.h Texture.h Normal.h Face.h Object.h \
   glm/glm/vec3.hpp glm/glm/detail/type_vec3.hpp \
   glm/glm/detail/type_vec.hpp glm/glm/detail/precision.hpp \
@@ -57,6 +154,104 @@ main.o: main.cpp Vertex.h Texture.h Normal.h Face.h Object.h \
   glm/glm/detail/type_int.hpp glm/glm/detail/type_vec3.inl \
   glm/glm/vec2.hpp glm/glm/detail/type_vec2.hpp \
   glm/glm/detail/type_vec2.inl
+main.o: main.cpp Vertex.h Texture.h Normal.h Face.h Object.h \
+  glm/glm/vec3.hpp glm/glm/detail/type_vec3.hpp \
+  glm/glm/detail/type_vec.hpp glm/glm/detail/precision.hpp \
+  glm/glm/detail/setup.hpp glm/glm/detail/../simd/platform.h \
+  glm/glm/detail/type_int.hpp glm/glm/detail/type_vec3.inl \
+  glm/glm/vec2.hpp glm/glm/detail/type_vec2.hpp \
+  glm/glm/detail/type_vec2.inl
+main.o: main.cpp Vertex.h Texture.h Normal.h Face.h Object.h \
+  glm/glm/vec3.hpp glm/glm/detail/type_vec3.hpp \
+  glm/glm/detail/type_vec.hpp glm/glm/detail/precision.hpp \
+  glm/glm/detail/setup.hpp glm/glm/detail/../simd/platform.h \
+  glm/glm/detail/type_int.hpp glm/glm/detail/type_vec3.inl \
+  glm/glm/vec2.hpp glm/glm/detail/type_vec2.hpp \
+  glm/glm/detail/type_vec2.inl
+main.o: main.cpp Vertex.h Texture.h Normal.h Face.h Object.h \
+  glm/glm/vec3.hpp glm/glm/detail/type_vec3.hpp \
+  glm/glm/detail/type_vec.hpp glm/glm/detail/precision.hpp \
+  glm/glm/detail/setup.hpp glm/glm/detail/../simd/platform.h \
+  glm/glm/detail/type_int.hpp glm/glm/detail/type_vec3.inl \
+  glm/glm/vec2.hpp glm/glm/detail/type_vec2.hpp \
+  glm/glm/detail/type_vec2.inl
+main.o: main.cpp Vertex.h Texture.h Normal.h Face.h Object.h \
+  glm/glm/vec3.hpp glm/glm/detail/type_vec3.hpp \
+  glm/glm/detail/type_vec.hpp glm/glm/detail/precision.hpp \
+  glm/glm/detail/setup.hpp glm/glm/detail/../simd/platform.h \
+  glm/glm/detail/type_int.hpp glm/glm/detail/type_vec3.inl \
+  glm/glm/vec2.hpp glm/glm/detail/type_vec2.hpp \
+  glm/glm/detail/type_vec2.inl
+main.o: main.cpp Vertex.h Texture.h Normal.h Face.h Object.h \
+  glm/glm/vec3.hpp glm/glm/detail/type_vec3.hpp \
+  glm/glm/detail/type_vec.hpp glm/glm/detail/precision.hpp \
+  glm/glm/detail/setup.hpp glm/glm/detail/../simd/platform.h \
+  glm/glm/detail/type_int.hpp glm/glm/detail/type_vec3.inl \
+  glm/glm/vec2.hpp glm/glm/detail/type_vec2.hpp \
+  glm/glm/detail/type_vec2.inl
+main.o: main.cpp Vertex.h Texture.h Normal.h Face.h Object.h \
+  glm/glm/vec3.hpp glm/glm/detail/type_vec3.hpp \
+  glm/glm/detail/type_vec.hpp glm/glm/detail/precision.hpp \
+  glm/glm/detail/setup.hpp glm/glm/detail/../simd/platform.h \
+  glm/glm/detail/type_int.hpp glm/glm/detail/type_vec3.inl \
+  glm/glm/vec2.hpp glm/glm/detail/type_vec2.hpp \
+  glm/glm/detail/type_vec2.inl
+main.o: main.cpp Vertex.h Texture.h Normal.h Face.h Object.h \
+  glm/glm/vec3.hpp glm/glm/detail/type_vec3.hpp \
+  glm/glm/detail/type_vec.hpp glm/glm/detail/precision.hpp \
+  glm/glm/detail/setup.hpp glm/glm/detail/../simd/platform.h \
+  glm/glm/detail/type_int.hpp glm/glm/detail/type_vec3.inl \
+  glm/glm/vec2.hpp glm/glm/detail/type_vec2.hpp \
+  glm/glm/detail/type_vec2.inl
+main.o: main.cpp Vertex.h Texture.h Normal.h Face.h Object.h \
+  glm/glm/vec3.hpp glm/glm/detail/type_vec3.hpp \
+  glm/glm/detail/type_vec.hpp glm/glm/detail/precision.hpp \
+  glm/glm/detail/setup.hpp glm/glm/detail/../simd/platform.h \
+  glm/glm/detail/type_int.hpp glm/glm/detail/type_vec3.inl \
+  glm/glm/vec2.hpp glm/glm/detail/type_vec2.hpp \
+  glm/glm/detail/type_vec2.inl
+main.o: main.cpp Vertex.h Texture.h Normal.h Face.h Object.h \
+  glm/glm/vec3.hpp glm/glm/detail/type_vec3.hpp \
+  glm/glm/detail/type_vec.hpp glm/glm/detail/precision.hpp \
+  glm/glm/detail/setup.hpp glm/glm/detail/../simd/platform.h \
+  glm/glm/detail/type_int.hpp glm/glm/detail/type_vec3.inl \
+  glm/glm/vec2.hpp glm/glm/detail/type_vec2.hpp \
+  glm/glm/detail/type_vec2.inl
+main.o: main.cpp Vertex.h Texture.h Normal.h Face.h Object.h \
+  glm/glm/vec3.hpp glm/glm/detail/type_vec3.hpp \
+  glm/glm/detail/type_vec.hpp glm/glm/detail/precision.hpp \
+  glm/glm/detail/setup.hpp glm/glm/detail/../simd/platform.h \
+  glm/glm/detail/type_int.hpp glm/glm/detail/type_vec3.inl \
+  glm/glm/vec2.hpp glm/glm/detail/type_vec2.hpp \
+  glm/glm/detail/type_vec2.inl
+main.o: main.cpp Vertex.h Texture.h Normal.h Face.h Object.h \
+  glm/glm/vec3.hpp glm/glm/detail/type_vec3.hpp \
+  glm/glm/detail/type_vec.hpp glm/glm/detail/precision.hpp \
+  glm/glm/detail/setup.hpp glm/glm/detail/../simd/platform.h \
+  glm/glm/detail/type_int.hpp glm/glm/detail/type_vec3.inl \
+  glm/glm/vec2.hpp glm/glm/detail/type_vec2.hpp \
+  glm/glm/detail/type_vec2.inl
+main.o: main.cpp Vertex.h Texture.h Normal.h Face.h Object.h \
+  glm/glm/vec3.hpp glm/glm/detail/type_vec3.hpp \
+  glm/glm/detail/type_vec.hpp glm/glm/detail/precision.hpp \
+  glm/glm/detail/setup.hpp glm/glm/detail/../simd/platform.h \
+  glm/glm/detail/type_int.hpp glm/glm/detail/type_vec3.inl \
+  glm/glm/vec2.hpp glm/glm/detail/type_vec2.hpp \
+  glm/glm/detail/type_vec2.inl
+main.o: main.cpp Vertex.h Texture.h Normal.h Face.h Object.h \
+  glm/glm/vec3.hpp glm/glm/detail/type_vec3.hpp \
+  glm/glm/detail/type_vec.hpp glm/glm/detail/precision.hpp \
+  glm/glm/detail/setup.hpp glm/glm/detail/../simd/platform.h \
+  glm/glm/detail/type_int.hpp glm/glm/detail/type_vec3.inl \
+  glm/glm/vec2.hpp glm/glm/detail/type_vec2.hpp \
+  glm/glm/detail/type_vec2.inl
+main.o: main.cpp Vertex.h Texture.h Normal.h Face.h Object.h \
+  glm/glm/vec3.hpp glm/glm/detail/type_vec3.hpp \
+  glm/glm/detail/type_vec.hpp glm/glm/detail/precision.hpp \
+  glm/glm/detail/setup.hpp glm/glm/detail/../simd/platform.h \
+  glm/glm/detail/type_int.hpp glm/glm/detail/type_vec3.inl \
+  glm/glm/vec2.hpp glm/glm/detail/type_vec2.hpp \
+  glm/glm/detail/type_vec2.inl
 Object.o: Object.cpp Object.h Vertex.h glm/glm/vec3.hpp \
   glm/glm/detail/type_vec3.hpp glm/glm/detail/type_vec.hpp \
   glm/glm/detail/precision.hpp glm/glm/detail/setup.hpp \
@@ -81,6 +276,44 @@ Object.o: Object.cpp Object.h Vertex.h glm/glm/vec3.hpp \
   glm/glm/detail/../simd/platform.h glm/glm/detail/type_int.hpp \
   glm/glm/detail/type_vec3.inl glm/glm/vec2.hpp \
   glm/glm/detail/type_vec2.hpp glm/glm/detail/type_vec2.inl
+Object.o: Object.cpp Object.h Vertex.h glm/glm/vec3.hpp \
+  glm/glm/detail/type_vec3.hpp glm/glm/detail/type_vec.hpp \
+  glm/glm/detail/precision.hpp glm/glm/detail/setup.hpp \
+  glm/glm/detail/../simd/platform.h glm/glm/detail/type_int.hpp \
+  glm/glm/detail/type_vec3.inl glm/glm/vec2.hpp \
+  glm/glm/detail/type_vec2.hpp glm/glm/detail/type_vec2.inl
+Object.o: Object.cpp Object.h Vertex.h glm/glm/vec3.hpp \
+  glm/glm/detail/type_vec3.hpp glm/glm/detail/type_vec.hpp \
+  glm/glm/detail/precision.hpp glm/glm/detail/setup.hpp \
+  glm/glm/detail/../simd/platform.h glm/glm/detail/type_int.hpp \
+  glm/glm/detail/type_vec3.inl glm/glm/vec2.hpp \
+  glm/glm/detail/type_vec2.hpp glm/glm/detail/type_vec2.inl
+Object.o: Object.cpp Object.h Vertex.h glm/glm/vec3.hpp \
+  glm/glm/detail/type_vec3.hpp glm/glm/detail/type_vec.hpp \
+  glm/glm/detail/precision.hpp glm/glm/detail/setup.hpp \
+  glm/glm/detail/../simd/platform.h glm/glm/detail/type_int.hpp \
+  glm/glm/detail/type_vec3.inl glm/glm/vec2.hpp \
+  glm/glm/detail/type_vec2.hpp glm/glm/detail/type_vec2.inl
+Object.o: Object.cpp Object.h Vertex.h glm/glm/vec3.hpp \
+  glm/glm/detail/type_vec3.hpp glm/glm/detail/type_vec.hpp \
+  glm/glm/detail/precision.hpp glm/glm/detail/setup.hpp \
+  glm/glm/detail/../simd/platform.h glm/glm/detail/type_int.hpp \
+  glm/glm/detail/type_vec3.inl glm/glm/vec2.hpp \
+  glm/glm/detail/type_vec2.hpp glm/glm/detail/type_vec2.inl
+main.o: main.cpp Vertex.h Texture.h Normal.h Face.h Object.h \
+  glm/glm/vec3.hpp glm/glm/detail/type_vec3.hpp \
+  glm/glm/detail/type_vec.hpp glm/glm/detail/precision.hpp \
+  glm/glm/detail/setup.hpp glm/glm/detail/../simd/platform.h \
+  glm/glm/detail/type_int.hpp glm/glm/detail/type_vec3.inl \
+  glm/glm/vec2.hpp glm/glm/detail/type_vec2.hpp \
+  glm/glm/detail/type_vec2.inl
+main.o: main.cpp Vertex.h Texture.h Normal.h Face.h Object.h \
+  glm/glm/vec3.hpp glm/glm/detail/type_vec3.hpp \
+  glm/glm/detail/type_vec.hpp glm/glm/detail/precision.hpp \
+  glm/glm/detail/setup.hpp glm/glm/detail/../simd/platform.h \
+  glm/glm/detail/type_int.hpp glm/glm/detail/type_vec3.inl \
+  glm/glm/vec2.hpp glm/glm/detail/type_vec2.hpp \
+  glm/glm/detail/type_vec2.inl
 main.o: main.cpp Vertex.h Texture.h Normal.h Face.h Object.h \
   glm/glm/vec3.hpp glm/glm/detail/type_vec3.hpp \
   glm/glm/detail/type_vec.hpp glm/glm/detail/precision.hpp \

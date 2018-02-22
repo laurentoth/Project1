@@ -46,8 +46,8 @@ using namespace std;
 
 
 // Window
-int g_width{1360};
-int g_height{768};
+int g_width{1500};
+int g_height{900};
 int g_window{0};
 
 // Camera
@@ -91,6 +91,11 @@ std::chrono::high_resolution_clock::time_point g_frameTime{
 //Line Style
   GLshort lineStyle=0xFFFF;
 
+//Translate Controls
+  float xf=0.0;
+float yf=0.0;
+float zf=0.0;
+
 //Creating the variables for the vectors for face, Normals, Textures, and Vertexs
   vector <glm::vec3> v;
   int currentIndexVertex=0;
@@ -133,7 +138,7 @@ std::chrono::high_resolution_clock::time_point g_frameTime{
     g_height = _h;
 
   // Viewport
-    glViewport(0, 0, g_width, g_height);
+    glViewport(0, 0, g_width*2, g_height);
 
   // Projection
     glMatrixMode(GL_PROJECTION);
@@ -158,37 +163,11 @@ std::chrono::high_resolution_clock::time_point g_frameTime{
       exit(0);
   }
 
-////////////////////////////////////////////////////////////////////////////////
-/// @brief Draw function for single frame
-  void
-  draw() {
-    using namespace std::chrono;
 
-  //////////////////////////////////////////////////////////////////////////////
-  // Clear
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClearColor(backgroudRed,backgroundGreen,backgroundBlue,backgroundAplha);
-
-  //////////////////////////////////////////////////////////////////////////////
-  // Draw
-
-  // Single directional light
-    static GLfloat lightPosition[] = { 0.5f, 1.0f, 1.5f, 0.0f };
-    static GLfloat whiteLight[] = { 0.8f, 0.8f, 0.8f, 1.0f };
-    static GLfloat darkLight[] = { 0.2f, 0.2f, 0.2f, 1.0f };
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
-    glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
-    glLightfv(GL_LIGHT0, GL_AMBIENT, darkLight);
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, whiteLight);
-
-  // Camera
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    gluLookAt(10*std::sin(g_theta), 0.f, 10*std::cos(g_theta),
-      0.f, 0.f, 0.f, 0.f, 1.f, 0.f);
-
-  // Model of cube
+  void drawObject()
+{
+   int normalCounter=-1;
+   // Model of cube
     glColor3f(red, green, blue);
 
     //Enables the basic drawing functions using user input functions
@@ -216,30 +195,101 @@ std::chrono::high_resolution_clock::time_point g_frameTime{
 
 //If the user wants a normal model looking if triangular faces or Quads
   if(solidModel){
+   
    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-   if(objectVector[0].getTriangle()){
-    glBegin(GL_QUADS);
-  }
+   if(!objectVector[0].getTriangle()){
+           glBegin(GL_QUADS);
+   
+
+   for(int i=0; i <vertexArray.size(); i++){
+
+      if(i%4==0){
+      normalCounter++;
+      glNormal3f(normalArray[normalCounter].x,normalArray[normalCounter].y,normalArray[normalCounter].z);
+     }
+
+      glVertex3f(vertexArray[i].x,vertexArray[i].y,vertexArray[i].z);  
+      glTexCoord2f(textureArray[i].x, textureArray[i].y);
+ }
+}
   
-else{
-   glBegin(GL_TRIANGLES);
+  else{
+    glBegin(GL_TRIANGLES);
+    for(int i=0; i <vertexArray.size(); i++){
+
+  if(i%3==0){
+    normalCounter++;
+    glNormal3f(normalArray[normalCounter].x,normalArray[normalCounter].y,normalArray[normalCounter].z);
+    }
+
+  glVertex3f(vertexArray[i].x,vertexArray[i].y,vertexArray[i].z); 
+  if(textureArray.size()>0){ 
+  glTexCoord2f(textureArray[i].x, textureArray[i].y);
+}
  }
+  }
+
  }
+ glEnd();
+ glDisable(GL_LINE_STIPPLE);
+glDisable(GL_LINE_SMOOTH);
 
- // GLuint vbo;
- // glGenBuffers(1, &vbo);
- // glBindBuffers(GL_ARRAY_BUFFER, vbo);
 
- // glBufferData(GL_ARRAY_BUFFER, vertexArray.size()*sizeof(glm::vec3),&vertexArray[0], GL_STATIC_DRAW);
+}
 
- // glBindBuffers(GL_ARRAY_BUFFER, vbo);
- // glEnableClientState(GL_VERTEX_ARRAY);
- // glVertexPointer(3,GL_FLOAT, );
- // glEnableClientState(GL_NORMAL_ARRAY);
- // glNormalPointer(GL_FLOAT, sizeof(float)*normalArray.size(), );
+////////////////////////////////////////////////////////////////////////////////
+/// @brief Draw function for single frame
+  void
+  draw() {
+    using namespace std::chrono;
 
- // glBindBuffers(GL_ELEMENT_ARRAY_BUFFER, );
- // glDrawElements();
+  //////////////////////////////////////////////////////////////////////////////
+  // Clear
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClearColor(backgroudRed,backgroundGreen,backgroundBlue,backgroundAplha);
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Draw
+
+  // Single directional light
+    static GLfloat lightPosition[] = { 0.5f, 1.0f, 1.5f, 0.0f };
+    static GLfloat whiteLight[] = { 0.8f, 0.8f, 0.8f, 1.0f };
+    static GLfloat darkLight[] = { 0.2f, 0.2f, 0.2f, 1.0f };
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+    glLightfv(GL_LIGHT0, GL_AMBIENT, darkLight);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, whiteLight);
+
+
+for(int o=0; o<objectVector.size(); o++){
+
+  // Camera
+    glMatrixMode(GL_MODELVIEW);
+     glLoadIdentity();
+    if(o==1){
+      glPushMatrix();
+      glTranslatef(xf,yf,zf);
+      
+      cout << "YUPPPPP" << endl;
+    }
+   
+    gluLookAt(10*std::sin(g_theta), 0.f, 10*std::cos(g_theta),
+      0.f, 0.f, 0.f, 0.f, 1.f, 0.f);
+ 
+ 
+ vertexArray = objectVector[o].getVertexArray();
+ normalArray = objectVector[o].getNormalArray();
+ textureArray = objectVector[o].getTextureArray();
+ drawObject();
+ if(o==1){
+      glPopMatrix();
+    }
+
+
+}
+
+
 
 
   //////////////////////////////////////////////////////////////////////////////
@@ -255,6 +305,8 @@ g_framesPerSecond = 1.f/(g_delay + g_frameRate);
   //printf("FPS: %6.2f\n", g_framesPerSecond);
 
 }
+
+
 
 
 //Helper Methods used to change between the types of models
@@ -327,6 +379,12 @@ specialKeyPressed(GLint _key, GLint _x, GLint _y) {
     break;
     case GLUT_KEY_RIGHT:
     g_theta += 0.2;
+    break;
+    case GLUT_KEY_UP:
+    xf+=1.0;
+    yf+=1.0;
+    zf+=1.0;
+    cout << "x: " << xf << endl;
     break;
     // Unhandled
     default:
@@ -651,6 +709,7 @@ main(int _argc, char** _argv) {
   base.readFile("theBench.obj");
   cout << "Does it get Here " << endl;
  objectVector.push_back(base);
+
 
 
   // GL

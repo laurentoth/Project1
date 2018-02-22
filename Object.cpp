@@ -22,17 +22,39 @@ void Object::readFile(std::string filename){
           if(line.substr(0,1).compare("t")==0){
              if(line.find("triangle")>0){
               triangle=true;
+              cout << "Set true " << endl;
             }
             else{
               triangle = false;
+               cout << "Set false" << endl;
             }
 
           }
 
             if(line.substr(0,1).compare("f")==0){
               int v1,v2,v3,v4, n, t1, t2, t3, t4;
+              bool texture=true;
+              for(int i=0; i<line.size()-1; i++){
+                  if(line[i]=='/' && line[i+1]=='/'){
+                      texture=false;
+                      cout << "texture is false" << endl;
+                    }
+
+               }  
+
 
               if(triangle){
+
+                if(!texture){ 
+                  cout << "in 6 " << line << endl;
+                  sscanf(line.c_str(),"%*s %i %*c %*c %i %i %*c %*c %i %i %*c %*c  %i", &v1, &n, &v2, &n, &v3, &n);
+                  vertexArray.push_back(v[v1-1]);
+                  vertexArray.push_back(v[v2-1]);
+                  vertexArray.push_back(v[v3-1]);
+                  normalArray.push_back(normals[n-1]);
+                }
+
+                else{
                 sscanf(line.c_str(),"%*s %i %*c %i %*c %i %i %*c %i %*c %i %i %*c %i %*c %i", &v1, &t1, &n, &v2, &t2, &n,&v3, &t3, &n);
                 vertexArray.push_back(v[v1-1]);
                 vertexArray.push_back(v[v2-1]);
@@ -41,6 +63,8 @@ void Object::readFile(std::string filename){
                 textureArray.push_back(textures[t2-1]);
                 textureArray.push_back(textures[t3-1]);
                 normalArray.push_back(normals[n-1]);
+                }
+
               }
               else{
                 sscanf(line.c_str(),"%*s %i %*c %i %*c %i %i %*c %i %*c %i %i %*c %i %*c %i %i %*c %i %*c %i", &v1, &t1, &n, &v2, &t2, &n,&v3, &t3, &n, &v4, &t4, &n);
