@@ -19,6 +19,7 @@
 #include <string>
 #include <vector>
 #include <stdio.h>
+#include <math.h>
 #include "Vertex.h"
 #include "Texture.h"
 #include "Normal.h"
@@ -96,6 +97,14 @@ std::chrono::high_resolution_clock::time_point g_frameTime{
 float yf=0.0;
 float zf=0.0;
 
+//Perspective coordinates
+float angle =0.0;
+float lx =0.0f;
+float lz =0.0f;
+float xpos =0.0f;
+float zpos =5.0f;
+
+
 //Creating the variables for the vectors for face, Normals, Textures, and Vertexs
   vector <glm::vec3> v;
   int currentIndexVertex=0;
@@ -114,6 +123,7 @@ float zf=0.0;
   bool solidModel=true;
   bool textureHere=true;
   vector<Object> objectVector;
+
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -138,12 +148,12 @@ float zf=0.0;
     g_height = _h;
 
   // Viewport
-    glViewport(0, 0, g_width*2, g_height);
+    glViewport(0, 0, g_width, g_height);
 
   // Projection
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(45.f, GLfloat(g_width)/g_height, 0.01f, 100.f);
+    gluPerspective(45.f, GLfloat(g_width)/g_height, 0.01f, 1000.f);
   }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -168,7 +178,7 @@ float zf=0.0;
 {
    int normalCounter=-1;
    // Model of cube
-    glColor3f(red, green, blue);
+   
 
     //Enables the basic drawing functions using user input functions
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -242,11 +252,12 @@ glDisable(GL_LINE_SMOOTH);
   void
   draw() {
     using namespace std::chrono;
+    cout << "Drawing" << endl;
 
   //////////////////////////////////////////////////////////////////////////////
   // Clear
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClearColor(backgroudRed,backgroundGreen,backgroundBlue,backgroundAplha);
+    glClearColor(0.22,1,0.984,backgroundAplha);
 
   //////////////////////////////////////////////////////////////////////////////
   // Draw
@@ -263,33 +274,38 @@ glDisable(GL_LINE_SMOOTH);
 
 
 for(int o=0; o<objectVector.size(); o++){
-
   // Camera
-    glMatrixMode(GL_MODELVIEW);
-     glLoadIdentity();
-    if(o==1){
-      glPushMatrix();
-      glTranslatef(xf,yf,zf);
-      
-      cout << "YUPPPPP" << endl;
-    }
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+  cout << "Drawing the objects " << o << endl;
+  
+  glPushMatrix();
+  glScalef(objectVector[o].getXScale(), objectVector[o].getYScale(), objectVector[o].getZScale());
+  glTranslatef(objectVector[o].getTranslate().x,objectVector[o].getTranslate().y,objectVector[o].getTranslate().z);
+ 
+  glColor3f(objectVector[o].getRed(), objectVector[o].getGreen(), objectVector[o].getBlue());
+  
+  gluLookAt(xpos, 1.0f, zpos, xpos+lx, 1.0f, zpos+lz, 0.0f, 1.0f, 0.0f);
+
+ 
+  vertexArray = objectVector[o].getVertexArray();
+  normalArray = objectVector[o].getNormalArray();
+  textureArray = objectVector[o].getTextureArray();
+  drawObject();
+  glPopMatrix();
    
-    gluLookAt(10*std::sin(g_theta), 0.f, 10*std::cos(g_theta),
-      0.f, 0.f, 0.f, 0.f, 1.f, 0.f);
- 
- 
- vertexArray = objectVector[o].getVertexArray();
- normalArray = objectVector[o].getNormalArray();
- textureArray = objectVector[o].getTextureArray();
- drawObject();
- if(o==1){
-      glPopMatrix();
-    }
+  }
 
-
-}
-
-
+//Making the ground
+  glPushMatrix();
+  glTranslatef(0,-100,100);
+  glColor3f(0.376, 0.502, 0.22);
+  glBegin(GL_QUADS);
+  glVertex3f(-5000.0,0,10000.0);
+  glVertex3f(5000.0,0, 10000.0);
+  glVertex3f(5000.0,0,-10000.0);
+  glVertex3f(-5000.0,0,-10000.0);
+  glEnd();
 
 
   //////////////////////////////////////////////////////////////////////////////
@@ -375,16 +391,23 @@ specialKeyPressed(GLint _key, GLint _x, GLint _y) {
   switch(_key) {
     // Arrow keys
     case GLUT_KEY_LEFT:
-    g_theta -= 0.2;
+    angle -=0.01f;
+    lx=sin(angle);
+    lz= -cos(angle);
     break;
     case GLUT_KEY_RIGHT:
-    g_theta += 0.2;
+    angle +=0.1f;
+    lx = sin(angle);
+    lz = -cos(angle);
     break;
     case GLUT_KEY_UP:
-    xf+=1.0;
-    yf+=1.0;
-    zf+=1.0;
-    cout << "x: " << xf << endl;
+    xpos+= lx*0.1f;
+    zpos += lz*0.1f;
+    break;
+
+    case GLUT_KEY_DOWN:
+    xpos -= lx*0.1f;
+    zpos -= lz*0.1f;
     break;
     // Unhandled
     default:
@@ -685,6 +708,47 @@ void submenuModel(int choice){
   objectVector.push_back(next);
 }
 
+
+void renderScene(std::string fileName){
+  ifstream inFile;
+   inFile.open(fileName.c_str());
+   string line;
+
+   while (getline(inFile,line))
+      { 
+      
+        char objectName[256];
+        float xt,yt,zt,sx,sy,sz,r,g,b;
+    
+        sscanf(line.c_str(),"%s %f %f %f %f %f %f %f %f %f ", &objectName, &xt, &yt, &zt, &sx, &sy, &sz, &r, &g, &b);
+
+       
+        if(strcmp(objectName, "tree.obj")==0){
+          Object o;
+          o.readFile("tree.obj");
+          o.setTranslate(xt,yt,zt);
+          o.setScale(sx,sy,sz);
+          o.setColors(r,g,b);
+          objectVector.push_back(o);
+        }
+
+        if(strcmp(objectName, "theBench.obj")==0){
+          Object o;
+          o.readFile("theBench.obj");
+          o.setTranslate(xt,yt,zt);
+          o.setScale(sx,sy, sz);
+          o.setColors(r,g,b);
+          objectVector.push_back(o);
+        }
+       }
+  
+      inFile.close();
+
+
+    //Making the ground
+
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 // Main
 
@@ -704,13 +768,8 @@ main(int _argc, char** _argv) {
   glutInitWindowPosition(50, 100);
   glutInitWindowSize(g_width, g_height); // HD size
   g_window = glutCreateWindow("Spiderling: A Rudamentary Game Engine");
-  Object base;
-
-  base.readFile("theBench.obj");
-  cout << "Does it get Here " << endl;
- objectVector.push_back(base);
-
-
+  
+  renderScene("scene.txt");
 
   // GL
   initialize();
