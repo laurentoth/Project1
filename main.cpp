@@ -27,6 +27,9 @@
 #include "Object.h"
 #include "glm/glm/vec3.hpp"
 #include "glm/glm/vec2.hpp"
+#include "glm/glm/trigonometric.hpp"
+#include "glm/glm/geometric.hpp"
+#include "glm/glm/gtx/normalize_dot.hpp"
 using namespace std;
 
 // GL
@@ -85,9 +88,9 @@ float zf=0.0;
 //Perspective coordinates
 float horizontalAngle =0.0;
 float verticalAngle = 0.0;
-glm::vec3 CameraEye = glm::vec3(0.0f,0.0f,0.0f);
-glm::vec3 CameraAt = glm::vec3(0.0f,0.0f,-1.0f);
-glm::vec2 CameraUp = glm::vec3(0.0f,1.0f,0.0f);
+glm::vec3 CameraEye =  glm::vec3(0.0f,0.0f,0.0f);
+glm::vec3 CameraAt =  glm::vec3(0.0f,0.0f,-1.0f);
+glm::vec3 CameraUp =  glm::vec3(0.0f,1.0f,0.0f);
 
 //Creating the variables for the vectors for face, Normals, Textures, and Vertexs
   vector <glm::vec3> v;
@@ -158,8 +161,6 @@ glm::vec2 CameraUp = glm::vec3(0.0f,1.0f,0.0f);
   void drawObject()
 {
    int normalCounter=-1;
-   // Model of cube
-   
 
     //Enables the basic drawing functions using user input functions
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -174,40 +175,39 @@ glm::vec2 CameraUp = glm::vec3(0.0f,1.0f,0.0f);
    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
    if(!objectVector[0].getTriangle()){
            glBegin(GL_QUADS);
-   
+      for(int i=0; i <vertexArray.size(); i++){
 
-   for(int i=0; i <vertexArray.size(); i++){
-
-      if(i%4==0){
-      normalCounter++;
-      glNormal3f(normalArray[normalCounter].x,normalArray[normalCounter].y,normalArray[normalCounter].z);
-     }
+          if(i%4==0){
+          normalCounter++;
+          glNormal3f(normalArray[normalCounter].x,normalArray[normalCounter].y,normalArray[normalCounter].z);
+          }
 
       glVertex3f(vertexArray[i].x,vertexArray[i].y,vertexArray[i].z);  
       glTexCoord2f(textureArray[i].x, textureArray[i].y);
- }
-
-  
-  else{
-    glBegin(GL_TRIANGLES);
-    for(int i=0; i <vertexArray.size(); i++){
-
-  if(i%3==0){
-    normalCounter++;
-    glNormal3f(normalArray[normalCounter].x,normalArray[normalCounter].y,normalArray[normalCounter].z);
-    }
-
-  glVertex3f(vertexArray[i].x,vertexArray[i].y,vertexArray[i].z); 
-  if(textureArray.size()>0){ 
-  glTexCoord2f(textureArray[i].x, textureArray[i].y);
+     }
 }
   
+  else{
+      glBegin(GL_TRIANGLES);
+      for(int i=0; i <vertexArray.size(); i++){
+
+           if(i%3==0){
+          normalCounter++;
+          glNormal3f(normalArray[normalCounter].x,normalArray[normalCounter].y,normalArray[normalCounter].z);
+          }
+
+           glVertex3f(vertexArray[i].x,vertexArray[i].y,vertexArray[i].z); 
+        if(textureArray.size()>0){ 
+        glTexCoord2f(textureArray[i].x, textureArray[i].y);
+        }
+      }
+  }
  glEnd();
  glDisable(GL_LINE_STIPPLE);
 glDisable(GL_LINE_SMOOTH);
 
-
 }
+
 
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Draw function for single frame
@@ -238,8 +238,8 @@ glDisable(GL_LINE_SMOOTH);
 for(int o=0; o<objectVector.size(); o++){
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
-  cout << "Drawing the objects " << o << endl;
-
+  gluLookAt(CameraEye.x,CameraEye.y,CameraEye.z,CameraEye.x+CameraAt.x,CameraEye.y+CameraAt.y,CameraEye.z+CameraAt.z,CameraUp.x, CameraUp.y, CameraUp.z);
+  
   glPushMatrix();
   glScalef(objectVector[o].getXScale(), objectVector[o].getYScale(), objectVector[o].getZScale());
   glTranslatef(objectVector[o].getTranslate().x,objectVector[o].getTranslate().y,objectVector[o].getTranslate().z);
@@ -257,14 +257,13 @@ for(int o=0; o<objectVector.size(); o++){
   glTranslatef(0,-100,100);
   glColor3f(0.376, 0.502, 0.22);
   glBegin(GL_QUADS);
-  glVertex3f(-5000.0,0,10000.0);
-  glVertex3f(5000.0,0, 10000.0);
+  glVertex3f(-5000.0,150,10000.0);
+  glVertex3f(5000.0,150, 10000.0);
   glVertex3f(5000.0,0,-10000.0);
   glVertex3f(-5000.0,0,-10000.0);
   glEnd();
   glPopMatrix();
 
-gluLookAt(CameraPosition.x, CameraPosition.y, CameraPosition.z,CameraAt,x, CameraAt.y, CameraAt.z, CameraDirection.x, CameraDirection.y, CameraDirection.z);
  
   //////////////////////////////////////////////////////////////////////////////
   // Show
@@ -297,37 +296,37 @@ void keyPressed(GLubyte _key, GLint _x, GLint _y) {
     case 119:
   verticalAngle+=3.0;
   if(verticalAngle>89.9) {
-    verticalAngle=89.9
+    verticalAngle=89.9;
   }
   CameraAt.x= cos(glm::radians(verticalAngle))*cos(glm::radians(horizontalAngle));
-  CameraAt.y= sin(glm::radians(verticalAngle);
-  CameraAt.z = cos(glm::radians(verticalAngle))* sin(glm::radians(verticalAngle));
+  CameraAt.y= sin(glm::radians(verticalAngle));
+  CameraAt.z = cos(glm::radians(verticalAngle))* sin(glm::radians(horizontalAngle));
     break;
 //Camera Looks Down
     case 115:
  verticalAngle-=3.0;
   if(verticalAngle<-89.9) {
-    verticalAngle=-89.9
+    verticalAngle=-89.9;
   }
   CameraAt.x= cos(glm::radians(verticalAngle))*cos(glm::radians(horizontalAngle));
-  CameraAt.y= sin(glm::radians(verticalAngle);
-  CameraAt.z = cos(glm::radians(verticalAngle))* sin(glm::radians(verticalAngle));
+  CameraAt.y= sin(glm::radians(verticalAngle));
+  CameraAt.z = cos(glm::radians(verticalAngle))* sin(glm::radians(horizontalAngle));
     break;
 
 //Camera Left
     case 97:
      horizontalAngle-=3.0;
      CameraAt.x= cos(glm::radians(verticalAngle))*cos(glm::radians(horizontalAngle));
-      CameraAt.y= sin(glm::radians(verticalAngle);
-      CameraAt.z = cos(glm::radians(verticalAngle))* sin(glm::radians(verticalAngle));
+      CameraAt.y= sin(glm::radians(verticalAngle));
+      CameraAt.z = cos(glm::radians(verticalAngle))* sin(glm::radians(horizontalAngle));
     break;
 
   //Camera Right
     case 100:
      horizontalAngle+=3.0;
     CameraAt.x= cos(glm::radians(verticalAngle))*cos(glm::radians(horizontalAngle));
-      CameraAt.y= sin(glm::radians(verticalAngle);
-      CameraAt.z = cos(glm::radians(verticalAngle))* sin(glm::radians(verticalAngle));
+      CameraAt.y= sin(glm::radians(verticalAngle));
+      CameraAt.z = cos(glm::radians(verticalAngle))* sin(glm::radians(horizontalAngle));
     break;
 
     // Unhandled
@@ -350,17 +349,17 @@ specialKeyPressed(GLint _key, GLint _x, GLint _y) {
   switch(_key) {
     // Arrow keys
     case GLUT_KEY_LEFT:
-    CameraPosition -= glm::normalize(glm::cross(CameraAt,CameraUp))*CameraSpeed;
+    CameraEye -= glm::normalize(glm::cross(CameraAt,CameraUp))*CameraSpeed;
     break;
     case GLUT_KEY_RIGHT:
-    CameraPosition += glm::normalize(glm::cross(CameraAt,CameraUp))*CameraSpeed;
+    CameraEye += glm::normalize(glm::cross(CameraAt,CameraUp))*CameraSpeed;
     break;
     case GLUT_KEY_UP:
-    CameraPosition += CameraSpeed*CameraAt;
+    CameraEye += CameraSpeed*CameraAt;
     break;
 
     case GLUT_KEY_DOWN:
-    CameraPosition -= CameraSpeed*CameraAt;
+    CameraEye -= CameraSpeed*CameraAt;
     break;
     // Unhandled
     default:
@@ -409,6 +408,14 @@ void renderScene(std::string fileName){
         if(strcmp(objectName, "theBench.obj")==0){
           Object o;
           o.readFile("theBench.obj");
+          o.setTranslate(xt,yt,zt);
+          o.setScale(sx,sy, sz);
+          o.setColors(r,g,b);
+          objectVector.push_back(o);
+        }
+        if(strcmp(objectName, "house.obj")==0){
+          Object o;
+          o.readFile("house.obj");
           o.setTranslate(xt,yt,zt);
           o.setScale(sx,sy, sz);
           o.setColors(r,g,b);
