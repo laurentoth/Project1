@@ -64,23 +64,8 @@ std::chrono::high_resolution_clock::time_point g_frameTime{
 
 //Menu Ids
   int menuID;
-  int submenuLineStyleID;
-  int submenuColorID;
-  int submenuLineWidthID;
-  int submenuPointSizeID;
-  int submenuBackgroundColorID;
-  int submenuModelID;
-
-
-//Model Color Coordinates
-  GLfloat red=0.5;
-  GLfloat green=0.5;
-  GLfloat blue=0.5;
 
 //Background Color Coordinates
-  GLfloat backgroudRed=0.0;
-  GLfloat backgroundBlue=0.0;
-  GLfloat backgroundGreen=0.0;
   GLfloat backgroundAplha=0.0;
 
 //Point Size
@@ -93,19 +78,16 @@ std::chrono::high_resolution_clock::time_point g_frameTime{
   GLshort lineStyle=0xFFFF;
 
 //Translate Controls
-  float xf=0.0;
+ float xf=0.0;
 float yf=0.0;
 float zf=0.0;
 
 //Perspective coordinates
-float angle =0.0;
-float yref =0.0f;
-float zref =0.0f;
-float xref =0.0f;
-float xpos =0.0f;
-float zpos =0.0f;
-float ypos =1.0f;
-
+float horizontalAngle =0.0;
+float verticalAngle = 0.0;
+glm::vec3 CameraEye = glm::vec3(0.0f,0.0f,0.0f);
+glm::vec3 CameraAt = glm::vec3(0.0f,0.0f,-1.0f);
+glm::vec2 CameraUp = glm::vec3(0.0f,1.0f,0.0f);
 
 //Creating the variables for the vectors for face, Normals, Textures, and Vertexs
   vector <glm::vec3> v;
@@ -120,9 +102,6 @@ float ypos =1.0f;
   int currentIndexTextures=0;
   int numVertex=0;
   int numIndicies=0;
-  bool wireFrame=false; 
-  bool pointModel=false;
-  bool solidModel=true;
   bool textureHere=true;
   vector<Object> objectVector;
 
@@ -191,22 +170,6 @@ float ypos =1.0f;
     glPointSize(pointSize);
 
 
-//If the user wants a wire frame
-    if(wireFrame){
-     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-     glBegin(GL_LINES);
-   }
-
-
-//If the user wants the points model
-   if(pointModel){
-    glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
-    glBegin(GL_POINTS);
-  }
-
-
-//If the user wants a normal model looking if triangular faces or Quads
-  if(solidModel){
    
    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
    if(!objectVector[0].getTriangle()){
@@ -223,7 +186,7 @@ float ypos =1.0f;
       glVertex3f(vertexArray[i].x,vertexArray[i].y,vertexArray[i].z);  
       glTexCoord2f(textureArray[i].x, textureArray[i].y);
  }
-}
+
   
   else{
     glBegin(GL_TRIANGLES);
@@ -238,10 +201,7 @@ float ypos =1.0f;
   if(textureArray.size()>0){ 
   glTexCoord2f(textureArray[i].x, textureArray[i].y);
 }
- }
-  }
-
- }
+  
  glEnd();
  glDisable(GL_LINE_STIPPLE);
 glDisable(GL_LINE_SMOOTH);
@@ -276,21 +236,14 @@ glDisable(GL_LINE_SMOOTH);
 
 
 for(int o=0; o<objectVector.size(); o++){
-  // Camera
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   cout << "Drawing the objects " << o << endl;
-  
+
   glPushMatrix();
   glScalef(objectVector[o].getXScale(), objectVector[o].getYScale(), objectVector[o].getZScale());
   glTranslatef(objectVector[o].getTranslate().x,objectVector[o].getTranslate().y,objectVector[o].getTranslate().z);
- 
   glColor3f(objectVector[o].getRed(), objectVector[o].getGreen(), objectVector[o].getBlue());
-  
-  gluLookAt(xpos, ypos, zpos, xpos+xref, 1.0f, zpos+zref, 0.0f, 1.0f, 0.0f);
-  cout << " xo: " << xpos << " yo: " << ypos << " zo: " << zpos << " xref: " << xpos+xref << " z ref: " << zpos+zref << endl;
-
- 
   vertexArray = objectVector[o].getVertexArray();
   normalArray = objectVector[o].getNormalArray();
   textureArray = objectVector[o].getTextureArray();
@@ -309,8 +262,10 @@ for(int o=0; o<objectVector.size(); o++){
   glVertex3f(5000.0,0,-10000.0);
   glVertex3f(-5000.0,0,-10000.0);
   glEnd();
+  glPopMatrix();
 
-
+gluLookAt(CameraPosition.x, CameraPosition.y, CameraPosition.z,CameraAt,x, CameraAt.y, CameraAt.z, CameraDirection.x, CameraDirection.y, CameraDirection.z);
+ 
   //////////////////////////////////////////////////////////////////////////////
   // Show
 glutSwapBuffers();
@@ -325,29 +280,6 @@ g_framesPerSecond = 1.f/(g_delay + g_frameRate);
 
 }
 
-
-
-
-//Helper Methods used to change between the types of models
-void changeToPoints(){
-  wireFrame=false; 
-  pointModel=true;
-  solidModel=false;
-}
-
-void changeToWire(){
-  wireFrame=true; 
-  pointModel=false;
-  solidModel=false;
-}
-
-void changeToSolid(){
-  wireFrame=false; 
-  pointModel=false;
-  solidModel=true;
-}
-
-
 ////////////////////////////////////////////////////////////////////////////////
 /// @brief Callback function for keyboard presses
 /// @param _key Key
@@ -360,34 +292,42 @@ void keyPressed(GLubyte _key, GLint _x, GLint _y) {
     std::cout << "Destroying window: " << g_window << std::endl;
     glutDestroyWindow(g_window);
     g_window = 0;
-    break;
-    case 112:
-    std::cout << "Changing to point model" << endl;
-    changeToPoints();
-    break;
-
+    break; 
+ //Camera Looks Up
     case 119:
-    std::cout<<"Changing to WireModel" << endl;
-    changeToWire();
+  verticalAngle+=3.0;
+  if(verticalAngle>89.9) {
+    verticalAngle=89.9
+  }
+  CameraAt.x= cos(glm::radians(verticalAngle))*cos(glm::radians(horizontalAngle));
+  CameraAt.y= sin(glm::radians(verticalAngle);
+  CameraAt.z = cos(glm::radians(verticalAngle))* sin(glm::radians(verticalAngle));
     break;
-
+//Camera Looks Down
     case 115:
-    std::cout << "Changing to Solid Modle" << endl;
-    changeToSolid();
+ verticalAngle-=3.0;
+  if(verticalAngle<-89.9) {
+    verticalAngle=-89.9
+  }
+  CameraAt.x= cos(glm::radians(verticalAngle))*cos(glm::radians(horizontalAngle));
+  CameraAt.y= sin(glm::radians(verticalAngle);
+  CameraAt.z = cos(glm::radians(verticalAngle))* sin(glm::radians(verticalAngle));
     break;
 
 //Camera Left
     case 97:
-     angle -=0.01f;
-    xref=sin(angle);
-    zref= -cos(angle);
+     horizontalAngle-=3.0;
+     CameraAt.x= cos(glm::radians(verticalAngle))*cos(glm::radians(horizontalAngle));
+      CameraAt.y= sin(glm::radians(verticalAngle);
+      CameraAt.z = cos(glm::radians(verticalAngle))* sin(glm::radians(verticalAngle));
     break;
 
   //Camera Right
     case 100:
-    angle +=0.1f;
-    xref = sin(angle);
-    zref = -cos(angle);
+     horizontalAngle+=3.0;
+    CameraAt.x= cos(glm::radians(verticalAngle))*cos(glm::radians(horizontalAngle));
+      CameraAt.y= sin(glm::radians(verticalAngle);
+      CameraAt.z = cos(glm::radians(verticalAngle))* sin(glm::radians(verticalAngle));
     break;
 
     // Unhandled
@@ -406,21 +346,21 @@ void keyPressed(GLubyte _key, GLint _x, GLint _y) {
 /// @param _y Y position of mouse
 void
 specialKeyPressed(GLint _key, GLint _x, GLint _y) {
+  float CameraSpeed =0.5;
   switch(_key) {
     // Arrow keys
     case GLUT_KEY_LEFT:
-    xpos-=10.0f;
-    cout << "Left " << endl;
+    CameraPosition -= glm::normalize(glm::cross(CameraAt,CameraUp))*CameraSpeed;
     break;
     case GLUT_KEY_RIGHT:
-    xpos += 10.0f;
+    CameraPosition += glm::normalize(glm::cross(CameraAt,CameraUp))*CameraSpeed;
     break;
     case GLUT_KEY_UP:
-    zpos += 0.3f;
+    CameraPosition += CameraSpeed*CameraAt;
     break;
 
     case GLUT_KEY_DOWN:
-    zpos -= 0.3f;
+    CameraPosition -= CameraSpeed*CameraAt;
     break;
     // Unhandled
     default:
@@ -434,291 +374,12 @@ specialKeyPressed(GLint _key, GLint _x, GLint _y) {
 //Creates the Main Menu
 void mainMenuHandler(int choice){
   switch (choice){
-    case 0:
-    cout << "Color Menu" << endl;
-    break;
-
-    case 1:
-    cout<< "Line Width" <<endl;
-    break;
-
-    case 2:
-    cout << "Changing Line Style"<< endl;
-    break;
 
 
     default:
     cout << "Le default " << endl;
     break;
   }
-}
-
-//SubMenu for Model Color
-void submenuColor(int choice){
-
-  switch(choice){
-    case 0: 
-    cout << "Red" << endl;
-    red =1.0;
-    blue =0.0;
-    green =0.0;
-    break;
-    case 1: 
-    cout << "Orange" << endl;
-    red =1.0;
-    green =0.5;
-    blue =0.0;
-    break;
-    case 2: 
-    cout << "Yellow" << endl;
-    green = 1.0;
-    blue = 0.0;
-    red =1.0;
-    break;
-    case 3: 
-    cout << "Green" << endl;
-    red=0.0;
-    blue=0.0;
-    green =1.0;
-    break;
-    case 4: 
-    cout << "Blue" << endl;
-    red =0.0;
-    blue=1.0;
-    green=0.0;
-    break;
-    case 5: 
-    cout << "Purple" << endl;
-    red=1.0;
-    blue=1.0;
-    green=0.0;
-    break;
-    case 6:
-    cout << "Grey" << endl;
-    red=0.5;
-    green =0.5;
-    blue =0.5;
-    break;
-  }
-}
-
-//SubMenu for Point Size
-void submenuPointSize(int choice){
-
- switch(choice){
-   case 0:
-   cout << "point size 1.0" << endl;
-   pointSize=1.0;
-   break;
-
-   case 1:
-   cout << "Point Size 2.0"<< endl;
-   pointSize=2.0;
-   break;
-
-   case 2:
-   cout << "Point Size 3.0" << endl;
-   pointSize=3.0;
-   break;
-
-   case 3:
-   cout << "Point Size 4.0" << endl;
-   pointSize=4.0;
-   break;
-
-   case 4:
-   cout << "Point Size 5.0" << endl;
-   pointSize=5.0;
-   break;
-
-   case 5:
-   cout << "Point Size 6.0" << endl;
-   pointSize=6.0;
-   break;
-   case 6:
-   cout << "Point Size 0.1 " << endl;
-   pointSize=0.1;
-   break;
-
-   case 7:
-   cout << "Point Size 0.5" << endl;
-   pointSize=0.5;
-   break;
-
-   default:
-   cout << "Point Size 2.0" << endl;
-   pointSize=2.0;
-   break;
-
-
- }
-
-}
-
-//SubMenu for Line Width
-void submenuLineWidth(int choice){
-
- switch(choice){
-   case 0:
-   cout << "Line size 1.0" << endl;
-   lineSize=1.0;
-   break;
-
-   case 1:
-   cout << "Line Size 2.0"<< endl;
-   lineSize=2.0;
-   break;
-
-   case 2:
-   cout << "Line Size 3.0" << endl;
-   lineSize=3.0;
-   break;
-
-   case 3:
-   cout << "Line Size 4.0" << endl;
-   lineSize=4.0;
-   break;
-
-   case 4:
-   cout << "Line Size 5.0" << endl;
-   lineSize=5.0;
-   break;
-
-   case 5:
-   cout << "Line Size 6.0" << endl;
-   lineSize=6.0;
-   break;
-   case 6:
-   cout << "Line Size 0.1 " << endl;
-   lineSize=0.1;
-   break;
-
-   case 7:
-   cout << "Line Size 0.5" << endl;
-   lineSize=0.5;
-   break;
-
-   default:
-   cout << "Line Size 2.0" << endl;
-   lineSize=2.0;
-   break;
-
-
- }
-
-}
-
-//SubMenu for Line Style
-void submenuLineStyle(int choice){
-  switch(choice){
-    case 0:
-    cout << "Line Style changed to Dash-Dot" << endl;
-    lineStyle = 0x1C47;
-    break;
-
-    case 1:
-    cout << "Line Style changed to Dashed" << endl;
-    lineStyle = 0x00FF;
-    break;
-
-    case 2:
-    cout << "Line Style Changed to Dotted" << endl;
-    lineStyle = 0x0101;
-    break;
-
-    case 3:
-    cout << "Line Style changed to solid"<< endl;
-    lineStyle=0xFFFF;
-    break;
-  }
-
-}
-
-//SubMenu for Background Color
-void submenuBackgroundColor(int choice){
-
-  switch(choice){
-    case 0: 
-    cout << "Red" << endl;
-    backgroudRed =1.0;
-    backgroundBlue =0.0;
-    backgroundGreen =0.0;
-    break;
-    case 1: 
-    cout << "Orange" << endl;
-    backgroudRed =1.0;
-    backgroundGreen =0.5;
-    backgroundBlue =0.0;
-    break;
-    case 2: 
-    cout << "Yellow" << endl;
-    backgroundGreen = 1.0;
-    backgroundBlue = 0.0;
-    backgroudRed =1.0;
-    break;
-    case 3: 
-    cout << "Green" << endl;
-    backgroudRed=0.0;
-    backgroundBlue=0.0;
-    backgroundGreen =1.0;
-    break;
-    case 4: 
-    cout << "Blue" << endl;
-    backgroudRed =0.0;
-    backgroundBlue=1.0;
-    backgroundGreen=1.0;
-    break;
-    case 5: 
-    cout << "Purple" << endl;
-    backgroudRed=1.0;
-    backgroundBlue=1.0;
-    backgroundGreen=0.0;
-    break;
-    case 6:
-    cout << "Black" << endl;
-    backgroudRed=0.0;
-    backgroundGreen =0.0;
-    backgroundBlue =0.0;
-    break;
-  }
-}
-
-//SubMenu for Which Model
-void submenuModel(int choice){
-    Object next;
-  switch(choice){
-    case 0:
-    cout << "Bench Model" << endl;
-    next.readFile("theBench.obj");
-    break;
-
-    case 1:
-    cout << "Cube Model" << endl;
-    next.readFile("cube.obj");
-    break;
-
-    case 2:
-    cout << "Skull Model" << endl;
-    next.readFile("skull.obj");
-    break;
-
-    case 3:
-    cout << "Tree Model" << endl;
-    next.readFile("tree.obj");
-    break;
-
-    case 4:
-    cout << "Pencil Model" << endl;
-    next.readFile("pencil.obj");
-    break;
-
-    case 5:
-    cout << "Palm Model" << endl;
-    next.readFile("palm.obj");
-    break;
-
-  }
-  objectVector.push_back(next);
 }
 
 
@@ -787,73 +448,9 @@ main(int _argc, char** _argv) {
   // GL
   initialize();
 
-  
-  submenuColorID = glutCreateMenu(submenuColor);
-  glutAddMenuEntry("Red",0);
-  glutAddMenuEntry("Orange",1);
-  glutAddMenuEntry("Yellow",2);
-  glutAddMenuEntry("Green",3);
-  glutAddMenuEntry("Blue",4);
-  glutAddMenuEntry("Purple",5);
-  glutAddMenuEntry("Grey",6);
-
-  submenuBackgroundColorID = glutCreateMenu(submenuBackgroundColor);
-  glutAddMenuEntry("Red",0);
-  glutAddMenuEntry("Orange",1);
-  glutAddMenuEntry("Yellow",2);
-  glutAddMenuEntry("Green",3);
-  glutAddMenuEntry("Blue",4);
-  glutAddMenuEntry("Purple",5);
-  glutAddMenuEntry("Black",6);
 
 
-  submenuLineWidthID= glutCreateMenu(submenuLineWidth);
-  glutAddMenuEntry("0.1",6);
-  glutAddMenuEntry("0.5",7);
-  glutAddMenuEntry("1.0",0);
-  glutAddMenuEntry("2.0",1);
-  glutAddMenuEntry("3.0",2);
-  glutAddMenuEntry("4.0",3);
-  glutAddMenuEntry("5.0",4);
-  glutAddMenuEntry("6.0",5);
-
-
-  submenuPointSizeID= glutCreateMenu(submenuPointSize);
-  glutAddMenuEntry("0.1",6);
-  glutAddMenuEntry("0.5",7);
-  glutAddMenuEntry("1.0",0);
-  glutAddMenuEntry("2.0",1);
-  glutAddMenuEntry("3.0",2);
-  glutAddMenuEntry("4.0",3);
-  glutAddMenuEntry("5.0",4);
-  glutAddMenuEntry("6.0",5);
-
-  submenuLineStyleID = glutCreateMenu(submenuLineStyle);
-  glutAddMenuEntry("Dash-dot",0);
-  glutAddMenuEntry("Dashed",1);
-  glutAddMenuEntry("Dotted",2);
-  glutAddMenuEntry("Solid",3);
-
-  submenuModelID = glutCreateMenu(submenuModel);
-  glutAddMenuEntry("Skull",2);
-  glutAddMenuEntry("Cube",1);
-  glutAddMenuEntry("Bench",0);
-  glutAddMenuEntry("Tree",3);
-  glutAddMenuEntry("Pencil",4);
-  glutAddMenuEntry("Palm",5);
-
-
-
-
-  menuID =glutCreateMenu(mainMenuHandler);
-
-  glutAddSubMenu("Change Color",submenuColorID);
-  glutAddSubMenu("Change Background Color",submenuBackgroundColorID);
-  glutAddSubMenu("Line Width",submenuLineWidthID);
-  glutAddSubMenu("Change Line Style",submenuLineStyleID);
-  glutAddSubMenu("Change Point Size",submenuPointSizeID);
-  glutAddSubMenu("Change Model",submenuModelID);
-  
+  menuID =glutCreateMenu(mainMenuHandler); 
   
 
   glutAttachMenu(GLUT_RIGHT_BUTTON);
