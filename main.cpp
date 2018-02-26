@@ -99,10 +99,12 @@ float zf=0.0;
 
 //Perspective coordinates
 float angle =0.0;
-float lx =0.0f;
-float lz =0.0f;
+float yref =0.0f;
+float zref =0.0f;
+float xref =0.0f;
 float xpos =0.0f;
-float zpos =5.0f;
+float zpos =0.0f;
+float ypos =1.0f;
 
 
 //Creating the variables for the vectors for face, Normals, Textures, and Vertexs
@@ -285,7 +287,8 @@ for(int o=0; o<objectVector.size(); o++){
  
   glColor3f(objectVector[o].getRed(), objectVector[o].getGreen(), objectVector[o].getBlue());
   
-  gluLookAt(xpos, 1.0f, zpos, xpos+lx, 1.0f, zpos+lz, 0.0f, 1.0f, 0.0f);
+  gluLookAt(xpos, ypos, zpos, xpos+xref, 1.0f, zpos+zref, 0.0f, 1.0f, 0.0f);
+  cout << " xo: " << xpos << " yo: " << ypos << " zo: " << zpos << " xref: " << xpos+xref << " z ref: " << zpos+zref << endl;
 
  
   vertexArray = objectVector[o].getVertexArray();
@@ -372,6 +375,21 @@ void keyPressed(GLubyte _key, GLint _x, GLint _y) {
     std::cout << "Changing to Solid Modle" << endl;
     changeToSolid();
     break;
+
+//Camera Left
+    case 97:
+     angle -=0.01f;
+    xref=sin(angle);
+    zref= -cos(angle);
+    break;
+
+  //Camera Right
+    case 100:
+    angle +=0.1f;
+    xref = sin(angle);
+    zref = -cos(angle);
+    break;
+
     // Unhandled
     default:
     std::cout << "Unhandled key: " << (int)(_key) << std::endl;
@@ -391,23 +409,18 @@ specialKeyPressed(GLint _key, GLint _x, GLint _y) {
   switch(_key) {
     // Arrow keys
     case GLUT_KEY_LEFT:
-    angle -=0.01f;
-    lx=sin(angle);
-    lz= -cos(angle);
+    xpos-=10.0f;
+    cout << "Left " << endl;
     break;
     case GLUT_KEY_RIGHT:
-    angle +=0.1f;
-    lx = sin(angle);
-    lz = -cos(angle);
+    xpos += 10.0f;
     break;
     case GLUT_KEY_UP:
-    xpos+= lx*0.1f;
-    zpos += lz*0.1f;
+    zpos += 0.3f;
     break;
 
     case GLUT_KEY_DOWN:
-    xpos -= lx*0.1f;
-    zpos -= lz*0.1f;
+    zpos -= 0.3f;
     break;
     // Unhandled
     default:
