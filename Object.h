@@ -27,10 +27,8 @@ public:
   float getZScale(){return sz;}
   void setTranslate(float x, float y, float z){Translate = glm::vec3(x,y,z);};
   void setScale(float x, float y, float z){sx=x; sy=y; sz=z;};
-  void setColors(float red, float green, float blue){r=red; g=green; b=blue;};
-  float getRed(){return r;};
-  float getGreen(){return g;};
-  float getBlue(){return b;};
+  void addColor(float red, float green, float blue){colors.push_back(glm::vec3(red,green,blue);)};
+  glm::vec3 getColor(int colorCode){return colors[colorCode];};
 
 
 
@@ -42,11 +40,13 @@ private:
   vector <glm::vec3> normalArray;
   vector <glm::vec2> textureArray; 
   vector<glm::vec2 >textures;
+  vector<glm::vec3> colors;
+  vector<int> colorCode;
   bool triangle;
   bool textureHere;
   glm::vec3 Translate;
   float sx, sy, sz;
-  float r,g,b;
+  
 
   
 
