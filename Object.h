@@ -1,3 +1,4 @@
+
 #ifndef OBJECT_H
 #define OBJECT_H
 #include "Vertex.h"
@@ -28,7 +29,9 @@ public:
   void setTranslate(float x, float y, float z){Translate = glm::vec3(x,y,z);};
   void setScale(float x, float y, float z){sx=x; sy=y; sz=z;};
   void addColor(float red, float green, float blue){colors.push_back(glm::vec3(red,green,blue);)};
-  glm::vec3 getColor(int colorCode){return colors[colorCode];};
+ vector<int> getColorCodeArray(){return colorCode;};
+vector<glm::vec3> getColorArray(){return colors;};
+  
 
 
 
