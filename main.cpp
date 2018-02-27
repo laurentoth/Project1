@@ -100,6 +100,8 @@ glm::vec3 CameraUp =  glm::vec3(0.0f,1.0f,0.0f);
   vector<glm::vec3> vertexArray;
   vector <glm::vec3> normalArray;
   vector <glm::vec2> textureArray; 
+  vector <glm::vec3> colorArray;
+  vector<int> colorCodeArray;
   int currentIndexFaces=0;
   vector<glm::vec2 >textures;
   int currentIndexTextures=0;
@@ -176,6 +178,7 @@ glm::vec3 CameraUp =  glm::vec3(0.0f,1.0f,0.0f);
    if(!objectVector[0].getTriangle()){
            glBegin(GL_QUADS);
       for(int i=0; i <vertexArray.size(); i++){
+        glColor3f(colorsArray[colorCodeArray[i]].x,colorsArray[colorCodeArray[i]].y ,colorsArray[colorCodeArray[i]].z );
 
           if(i%4==0){
           normalCounter++;
@@ -190,6 +193,8 @@ glm::vec3 CameraUp =  glm::vec3(0.0f,1.0f,0.0f);
   else{
       glBegin(GL_TRIANGLES);
       for(int i=0; i <vertexArray.size(); i++){
+        glColor3f(colorsArray[colorCodeArray[i]].x,colorsArray[colorCodeArray[i]].y ,colorsArray[colorCodeArray[i]].z );
+
 
            if(i%3==0){
           normalCounter++;
@@ -243,10 +248,12 @@ for(int o=0; o<objectVector.size(); o++){
   glPushMatrix();
   glScalef(objectVector[o].getXScale(), objectVector[o].getYScale(), objectVector[o].getZScale());
   glTranslatef(objectVector[o].getTranslate().x,objectVector[o].getTranslate().y,objectVector[o].getTranslate().z);
-  glColor3f(objectVector[o].getRed(), objectVector[o].getGreen(), objectVector[o].getBlue());
+  
   vertexArray = objectVector[o].getVertexArray();
   normalArray = objectVector[o].getNormalArray();
   textureArray = objectVector[o].getTextureArray();
+  colorArray = objectVector[o].getColorArray();
+  colorCodeArray = objectVector[o].getColorCodeArray();
   drawObject();
   glPopMatrix();
    
