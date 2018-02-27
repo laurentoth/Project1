@@ -1,3 +1,4 @@
+
 #include "Object.h"
 //Parser Method that takes the filename in and parses as needed
 void Object::readFile(std::string filename){
@@ -13,11 +14,17 @@ void Object::readFile(std::string filename){
           inFile.open(filename.c_str());
           string line;
           GLfloat point;
+          int currentColorCode=-1;
 
 
       while (getline(inFile,line))
       { 
-
+          if(line.substr(0,1).compare("c")==0){
+            float r,g,b;
+            sscanf(line,"%*s %f %f %f",&r, &g, &b);
+            addColor(r,g,b);
+            colorCode++;
+          }
 
           if(line.substr(0,1).compare("t")==0){
              if(line.find("triangle")>0){
@@ -44,7 +51,9 @@ void Object::readFile(std::string filename){
 
 
               if(triangle){
-
+                colorCode.push_back(currentColorCode);
+                colorCode.push_back(currentColorCode);
+                colorCode.push_back(currentColorCode);
                 if(!texture){ 
                   cout << "in 6 " << line << endl;
                   sscanf(line.c_str(),"%*s %i %*c %*c %i %i %*c %*c %i %i %*c %*c  %i", &v1, &n, &v2, &n, &v3, &n);
@@ -67,6 +76,10 @@ void Object::readFile(std::string filename){
 
               }
               else{
+                 colorCode.push_back(currentColorCode);
+                colorCode.push_back(currentColorCode);
+                colorCode.push_back(currentColorCode);
+                colorCode.push_back(currentColorCode);
                 sscanf(line.c_str(),"%*s %i %*c %i %*c %i %i %*c %i %*c %i %i %*c %i %*c %i %i %*c %i %*c %i", &v1, &t1, &n, &v2, &t2, &n,&v3, &t3, &n, &v4, &t4, &n);
                  vertexArray.push_back(v[v1-1]);
                 vertexArray.push_back(v[v2-1]);
